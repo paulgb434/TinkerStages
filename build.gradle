@@ -196,6 +196,7 @@ curseforge {
                 requiredLibrary 'bookshelf'
                 requiredLibrary 'crafttweaker'
                 requiredLibrary 'game-stages'
+                requiredLibrary 'tinkers-construct'
             }
         }
         
