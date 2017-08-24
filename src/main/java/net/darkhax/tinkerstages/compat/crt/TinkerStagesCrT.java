@@ -38,16 +38,16 @@ public class TinkerStagesCrT {
 
         TinkerStages.TOOL_CRAFTING_STAGES.put(toolType, stage);
     }
-    
+
     @ZenMethod
     public static void addMaterialStage (String stage, String material) {
-        
+
         TinkerStages.TOOL_MATERIAL_STAGES.put(material, stage);
     }
-    
+
     @ZenMethod
     public static void addModifierStage (String stage, String modifier) {
-        
+
         TinkerStages.TOOL_MODIFIER_STAGES.put(modifier, stage);
     }
 }

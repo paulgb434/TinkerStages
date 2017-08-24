@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.google.common.base.Joiner;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
@@ -126,14 +125,14 @@ public class TinkerStages {
         }
 
         // Specific material prevention
-        for (ItemStack part : event.getToolParts()) {
-            
+        for (final ItemStack part : event.getToolParts()) {
+
             if (!part.isEmpty()) {
-                
+
                 final Material material = TinkerUtil.getMaterialFromStack(part);
-                
+
                 if (TOOL_MATERIAL_STAGES.containsKey(material.identifier) && Collections.disjoint(stageData.getUnlockedStages(), TOOL_MATERIAL_STAGES.get(material.identifier))) {
-                    
+
                     event.setCanceled("You can not use the " + part.getDisplayName() + " for tools yet. Further progression is needed.");
                     return;
                 }
@@ -160,10 +159,10 @@ public class TinkerStages {
             event.setCanceled("You can not build any tool parts at this time. Further progression is needed.");
             return;
         }
-        
+
         // Specific material prevention
         if (TOOL_MATERIAL_STAGES.containsKey(material.identifier) && Collections.disjoint(stageData.getUnlockedStages(), TOOL_MATERIAL_STAGES.get(material.identifier))) {
-            
+
             event.setCanceled("You can not make parts from " + material.getLocalizedName() + " yet. Further progression is needed.");
             return;
         }
@@ -189,8 +188,8 @@ public class TinkerStages {
         }
 
         // Prevent specific tool crafting
-        for (IModifier modifier : event.getModifiers()) {
-            
+        for (final IModifier modifier : event.getModifiers()) {
+
             if (TOOL_MODIFIER_STAGES.containsKey(modifier.getIdentifier()) && Collections.disjoint(stageData.getUnlockedStages(), TOOL_MODIFIER_STAGES.get(modifier.getIdentifier()))) {
 
                 event.setCanceled("You can not apply the " + modifier.getLocalizedName() + " modifier at this time. Further progression is needed.");
