@@ -23,7 +23,7 @@ import slimeknights.tconstruct.library.materials.Material;
 import slimeknights.tconstruct.library.modifiers.IModifier;
 import slimeknights.tconstruct.library.utils.TinkerUtil;
 
-@Mod(modid = "tinkerstages", name = "Tinker Stages", version = "@VERSION@", dependencies = "required-after:bookshelf@[2.0.0.425,);required-after:gamestages@[1.0.19,);required-after:crafttweaker@[2.7.2.,)", acceptedMinecraftVersions = "[1.12,1.12.2)")
+@Mod(modid = "tinkerstages", name = "Tinker Stages", version = "@VERSION@", dependencies = "required-after:bookshelf@[2.1.427,);required-after:gamestages@[1.0.19,);required-after:crafttweaker@[2.7.2.,)", acceptedMinecraftVersions = "[1.12,1.12.2)")
 public class TinkerStages {
 
     public static final Set<DryingRecipe> recipes = new HashSet<>();
