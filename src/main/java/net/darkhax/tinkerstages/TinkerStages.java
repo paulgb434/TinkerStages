@@ -7,8 +7,10 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
 import net.darkhax.bookshelf.util.StackUtils;
+import net.darkhax.gamestages.GameStages;
 import net.darkhax.gamestages.capabilities.PlayerDataHandler;
 import net.darkhax.gamestages.capabilities.PlayerDataHandler.IStageData;
+import net.darkhax.tinkerstages.commands.CommandTconDump;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
@@ -23,7 +25,7 @@ import slimeknights.tconstruct.library.materials.Material;
 import slimeknights.tconstruct.library.modifiers.IModifier;
 import slimeknights.tconstruct.library.utils.TinkerUtil;
 
-@Mod(modid = "tinkerstages", name = "Tinker Stages", version = "@VERSION@", dependencies = "required-after:tconstruct@[1.12-2.7.2.26,);required-after:bookshelf@[2.1.431,);required-after:gamestages@[1.0.52,);required-after:crafttweaker@[2.7.2.,)", acceptedMinecraftVersions = "[1.12,1.12.2)")
+@Mod(modid = "tinkerstages", name = "Tinker Stages", version = "@VERSION@", dependencies = "required-after:tconstruct@[1.12-2.7.2.27,);required-after:bookshelf@[2.1.431,);required-after:gamestages@[1.0.52,);required-after:crafttweaker@[2.7.2.,)", acceptedMinecraftVersions = "[1.12,1.12.2)")
 public class TinkerStages {
 
     public static final Set<DryingRecipe> recipes = new HashSet<>();
@@ -74,11 +76,12 @@ public class TinkerStages {
     public void preInit (FMLPreInitializationEvent event) {
 
         MinecraftForge.EVENT_BUS.register(this);
+        GameStages.COMMAND.addSubcommand(new CommandTconDump());
     }
 
     @SubscribeEvent
     public void onToolCrafted (ToolCraftingEvent event) {
-
+        
         final IStageData stageData = PlayerDataHandler.getStageData(event.getPlayer());
         final String itemId = StackUtils.getStackIdentifier(event.getItemStack());
 
@@ -186,7 +189,7 @@ public class TinkerStages {
             return;
         }
 
-        // Prevent specific tool crafting
+        // Prevent specific modifier
         for (final IModifier modifier : event.getModifiers()) {
 
             if (TOOL_MODIFIER_STAGES.containsKey(modifier.getIdentifier()) && stageData.hasUnlockedAnyOf(TOOL_MODIFIER_STAGES.get(modifier.getIdentifier()))) {
