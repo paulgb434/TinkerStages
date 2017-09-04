@@ -81,7 +81,7 @@ public class TinkerStages {
 
     @SubscribeEvent
     public void onToolCrafted (ToolCraftingEvent event) {
-        
+
         final IStageData stageData = PlayerDataHandler.getStageData(event.getPlayer());
         final String itemId = StackUtils.getStackIdentifier(event.getItemStack());
 
@@ -93,14 +93,15 @@ public class TinkerStages {
         }
 
         // General crafting prevention
-        if (!GENERAL_CRAFTING_STAGES.isEmpty() && stageData.hasUnlockedAnyOf(GENERAL_CRAFTING_STAGES)) {
+        if (!GENERAL_CRAFTING_STAGES.isEmpty() && !stageData.hasUnlockedAnyOf(GENERAL_CRAFTING_STAGES)) {
 
+            System.out.print("fuck");
             event.setCanceled("You can not craft any Tinkers Construct tools at this time. Further progression is needed.");
             return;
         }
 
         // Prevent specific tool crafting
-        if (TOOL_CRAFTING_STAGES.containsKey(itemId) && stageData.hasUnlockedAnyOf(TOOL_CRAFTING_STAGES.get(itemId))) {
+        if (TOOL_CRAFTING_STAGES.containsKey(itemId) && !stageData.hasUnlockedAnyOf(TOOL_CRAFTING_STAGES.get(itemId))) {
 
             event.setCanceled("You can not craft the " + event.getItemStack().getDisplayName() + " at this time. Further progression is needed.");
             return;
@@ -120,7 +121,7 @@ public class TinkerStages {
         }
 
         // General replacing prevention
-        if (!GENERAL_PART_REPLACING_STAGES.isEmpty() && stageData.hasUnlockedAnyOf(GENERAL_PART_REPLACING_STAGES)) {
+        if (!GENERAL_PART_REPLACING_STAGES.isEmpty() && !stageData.hasUnlockedAnyOf(GENERAL_PART_REPLACING_STAGES)) {
 
             event.setCanceled("You can not swap any tool parts at this time. Further progression is needed.");
             return;
@@ -133,7 +134,7 @@ public class TinkerStages {
 
                 final Material material = TinkerUtil.getMaterialFromStack(part);
 
-                if (TOOL_MATERIAL_STAGES.containsKey(material.identifier) && stageData.hasUnlockedAnyOf(TOOL_MATERIAL_STAGES.get(material.identifier))) {
+                if (TOOL_MATERIAL_STAGES.containsKey(material.identifier) && !stageData.hasUnlockedAnyOf(TOOL_MATERIAL_STAGES.get(material.identifier))) {
 
                     event.setCanceled("You can not use the " + part.getDisplayName() + " for tools yet. Further progression is needed.");
                     return;
@@ -156,14 +157,14 @@ public class TinkerStages {
         }
 
         // General part building prevention
-        if (!GENERAL_PART_BUILDING_STAGES.isEmpty() && stageData.hasUnlockedAnyOf(GENERAL_PART_BUILDING_STAGES)) {
+        if (!GENERAL_PART_BUILDING_STAGES.isEmpty() && !stageData.hasUnlockedAnyOf(GENERAL_PART_BUILDING_STAGES)) {
 
             event.setCanceled("You can not build any tool parts at this time. Further progression is needed.");
             return;
         }
 
         // Specific material prevention
-        if (TOOL_MATERIAL_STAGES.containsKey(material.identifier) && stageData.hasUnlockedAnyOf(TOOL_MATERIAL_STAGES.get(material.identifier))) {
+        if (TOOL_MATERIAL_STAGES.containsKey(material.identifier) && !stageData.hasUnlockedAnyOf(TOOL_MATERIAL_STAGES.get(material.identifier))) {
 
             event.setCanceled("You can not make parts from " + material.getLocalizedName() + " yet. Further progression is needed.");
             return;
@@ -183,7 +184,7 @@ public class TinkerStages {
         }
 
         // General modifier prevention
-        if (!GENERAL_MODIFIER_STAGES.isEmpty() && stageData.hasUnlockedAnyOf(GENERAL_MODIFIER_STAGES)) {
+        if (!GENERAL_MODIFIER_STAGES.isEmpty() && !stageData.hasUnlockedAnyOf(GENERAL_MODIFIER_STAGES)) {
 
             event.setCanceled("You can not apply any tool modifiers at this time. Further progression is needed.");
             return;
@@ -192,7 +193,7 @@ public class TinkerStages {
         // Prevent specific modifier
         for (final IModifier modifier : event.getModifiers()) {
 
-            if (TOOL_MODIFIER_STAGES.containsKey(modifier.getIdentifier()) && stageData.hasUnlockedAnyOf(TOOL_MODIFIER_STAGES.get(modifier.getIdentifier()))) {
+            if (TOOL_MODIFIER_STAGES.containsKey(modifier.getIdentifier()) && !stageData.hasUnlockedAnyOf(TOOL_MODIFIER_STAGES.get(modifier.getIdentifier()))) {
 
                 event.setCanceled("You can not apply the " + modifier.getLocalizedName() + " modifier at this time. Further progression is needed.");
                 return;
