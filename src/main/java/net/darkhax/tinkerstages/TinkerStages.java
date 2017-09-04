@@ -6,13 +6,17 @@ import java.util.Set;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
+import net.darkhax.bookshelf.util.PlayerUtils;
 import net.darkhax.bookshelf.util.StackUtils;
 import net.darkhax.gamestages.GameStages;
 import net.darkhax.gamestages.capabilities.PlayerDataHandler;
 import net.darkhax.gamestages.capabilities.PlayerDataHandler.IStageData;
 import net.darkhax.tinkerstages.commands.CommandTconDump;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -23,6 +27,7 @@ import slimeknights.tconstruct.library.events.TinkerCraftingEvent.ToolPartCrafti
 import slimeknights.tconstruct.library.events.TinkerCraftingEvent.ToolPartReplaceEvent;
 import slimeknights.tconstruct.library.materials.Material;
 import slimeknights.tconstruct.library.modifiers.IModifier;
+import slimeknights.tconstruct.library.utils.TagUtil;
 import slimeknights.tconstruct.library.utils.TinkerUtil;
 
 @Mod(modid = "tinkerstages", name = "Tinker Stages", version = "@VERSION@", dependencies = "required-after:tconstruct@[1.12-2.7.2.27,);required-after:bookshelf@[2.1.431,);required-after:gamestages@[1.0.52,);required-after:crafttweaker@[2.7.2.,)", acceptedMinecraftVersions = "[1.12,1.12.2)")
@@ -212,6 +217,52 @@ public class TinkerStages {
 
                 event.setCanceled("You can not apply the " + modifier.getLocalizedName() + " modifier at this time. Further progression is needed.");
                 return;
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void onLivingUpdate (LivingUpdateEvent event) {
+
+        if (PlayerUtils.isPlayerReal(event.getEntityLiving())) {
+
+            final EntityPlayer player = (EntityPlayer) event.getEntityLiving();
+            final IStageData stageData = PlayerDataHandler.getStageData(player);
+            final ItemStack stack = player.getHeldItemMainhand();
+
+            final String itemId = StackUtils.getStackIdentifier(stack);
+
+            if (stageData != null && !stack.isEmpty()) {
+
+                // Prevent specific tool
+                if (TOOL_CRAFTING_STAGES.containsKey(itemId) && !stageData.hasUnlockedAnyOf(TOOL_CRAFTING_STAGES.get(itemId))) {
+
+                    player.sendMessage(new TextComponentString("You dropped the " + stack.getDisplayName() + "! Further progression is needed to wield this type of tool."));
+                    player.dropItem(true);
+                    return;
+                }
+
+                // Specific material prevention
+                for (final Material material : TinkerUtil.getMaterialsFromTagList(TagUtil.getBaseMaterialsTagList(stack))) {
+
+                    if (TOOL_MATERIAL_STAGES.containsKey(material.identifier) && !stageData.hasUnlockedAnyOf(TOOL_MATERIAL_STAGES.get(material.identifier))) {
+
+                        player.sendMessage(new TextComponentString("You dropped the " + stack.getDisplayName() + "! Further progression is needed to wield " + material.getLocalizedName() + " tools."));
+                        player.dropItem(true);
+                        return;
+                    }
+                }
+
+                // Specific modifier prevention
+                for (final IModifier modifier : TinkerUtil.getModifiers(stack)) {
+
+                    if (TOOL_MODIFIER_STAGES.containsKey(modifier.getIdentifier()) && !stageData.hasUnlockedAnyOf(TOOL_MODIFIER_STAGES.get(modifier.getIdentifier()))) {
+
+                        player.sendMessage(new TextComponentString("You dropped the " + stack.getDisplayName() + "! Further progression is needed to use the " + modifier.getLocalizedName() + " modifier."));
+                        player.dropItem(true);
+                        return;
+                    }
+                }
             }
         }
     }
