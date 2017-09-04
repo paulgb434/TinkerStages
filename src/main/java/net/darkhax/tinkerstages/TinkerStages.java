@@ -106,6 +106,21 @@ public class TinkerStages {
             event.setCanceled("You can not craft the " + event.getItemStack().getDisplayName() + " at this time. Further progression is needed.");
             return;
         }
+
+        // Specific material prevention
+        for (final ItemStack part : event.getToolParts()) {
+
+            if (!part.isEmpty()) {
+
+                final Material material = TinkerUtil.getMaterialFromStack(part);
+
+                if (TOOL_MATERIAL_STAGES.containsKey(material.identifier) && !stageData.hasUnlockedAnyOf(TOOL_MATERIAL_STAGES.get(material.identifier))) {
+
+                    event.setCanceled("You can not use the " + part.getDisplayName() + " in tools yet. Further progression is needed for " + material.getLocalizedName() + " tools.");
+                    return;
+                }
+            }
+        }
     }
 
     @SubscribeEvent
