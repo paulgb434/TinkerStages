@@ -32,7 +32,7 @@ import slimeknights.tconstruct.library.modifiers.IModifier;
 import slimeknights.tconstruct.library.utils.TagUtil;
 import slimeknights.tconstruct.library.utils.TinkerUtil;
 
-@Mod(modid = "tinkerstages", name = "Tinker Stages", version = "@VERSION@", dependencies = "required-after:tconstruct@[1.12-2.7.2.27,);required-after:bookshelf@[2.1.431,);required-after:gamestages@[1.0.52,);required-after:crafttweaker@[2.7.2.,)", acceptedMinecraftVersions = "[1.12,1.12.2)", certificateFingerprint = "@FINGERPRINT@")
+@Mod(modid = "tinkerstages", name = "Tinker Stages", version = "@VERSION@", dependencies = "required-after:tconstruct@[1.12-2.7.2.27,);required-after:bookshelf@[2.1.443,);required-after:gamestages@[1.0.63,);required-after:crafttweaker@[2.7.2.,)", certificateFingerprint = "@FINGERPRINT@")
 public class TinkerStages {
 
     /**
