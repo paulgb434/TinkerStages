@@ -185,7 +185,7 @@ public class TinkerStages {
             return;
      	   }
         }
-    }
+    } }
     
     @SubscribeEvent
     public void onLivingUpdate (LivingUpdateEvent event) {
