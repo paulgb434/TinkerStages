@@ -170,14 +170,7 @@ public class TinkerStages {
     @SubscribeEvent
     public void onToolModified (ToolModifyEvent event) {
         
-        // General modifier prevention
-        if (!GENERAL_MODIFIER_STAGES.isEmpty() && !GameStageHelper.hasAnyOf(event.getPlayer(), GENERAL_MODIFIER_STAGES) && !TOOL_MODIFIER_STAGES.containsKey(modifier.getIdentifier()) {
-            
-            event.setCanceled("You can not apply any tool modifiers at this time. Further progression is needed.");
-            return;
-        }
-        
-        // Prevent specific modifier
+		// Prevent specific modifier
         for (final IModifier modifier : event.getModifiers()) {
             
             if (TOOL_MODIFIER_STAGES.containsKey(modifier.getIdentifier()) && !GameStageHelper.hasAnyOf(event.getPlayer(), TOOL_MODIFIER_STAGES.get(modifier.getIdentifier()))) {
@@ -185,6 +178,13 @@ public class TinkerStages {
                 event.setCanceled("You can not apply the " + modifier.getLocalizedName() + " modifier at this time. Further progression is needed.");
                 return;
             }
+		
+        // General modifier prevention
+        if (!GENERAL_MODIFIER_STAGES.isEmpty() && !GameStageHelper.hasAnyOf(event.getPlayer(), GENERAL_MODIFIER_STAGES) && !TOOL_MODIFIER_STAGES.containsKey(modifier.getIdentifier())) {
+            
+            event.setCanceled("You can not apply any tool modifiers at this time. Further progression is needed.");
+            return;
+        }
         }
     }
     
