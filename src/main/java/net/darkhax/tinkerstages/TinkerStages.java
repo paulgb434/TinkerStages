@@ -179,7 +179,7 @@ public class TinkerStages {
 		boolean hasOtherModifier = true;
                 event.setCanceled("You can not apply the " + modifier.getLocalizedName() + " modifier at this time. Further progression is needed.");
                 return;
-            } else if (!GENERAL_MODIFIER_STAGES.isEmpty() && !GameStageHelper.hasAnyOf(event.getPlayer(), GENERAL_MODIFIER_STAGES) && hasOtherModifier = false) {
+            } else if (!GENERAL_MODIFIER_STAGES.isEmpty() && !GameStageHelper.hasAnyOf(event.getPlayer(), GENERAL_MODIFIER_STAGES) && hasOtherModifier == false) {
             
             event.setCanceled("You can not apply any tool modifiers at this time. Further progression is needed.");
             return;
